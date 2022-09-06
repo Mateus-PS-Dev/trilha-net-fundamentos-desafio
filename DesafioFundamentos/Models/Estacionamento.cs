@@ -6,7 +6,7 @@ namespace DesafioFundamentos.Models
         private decimal precoPorHora = 0.00M;
 
         private List<string> veiculos = new List<string>();
-        private List<int> horaEntradaVeiculos = new List<int>();
+        private List<string> datasEntradaVeiculoString = new List<string>();
 
         public Estacionamento(decimal precoInicial, decimal precoPorHora)
         {
@@ -15,55 +15,48 @@ namespace DesafioFundamentos.Models
         }
         
         /*
-        Aqui transformei a listapara demilitar o numero de vagas pois o 
-        estaconamento tem um numero de vagas para 50 veiculos e espaço para mais 
-        outros 8 para dia de eventos e dias atípicos.
+        Aqui transformei a lista para demilitar o numero de vagas pois o 
+        estaconamento tem um numero de vagas limitadas para veiculos e espaço para mais alguns
+        outros para dia de eventos e dias atípicos.
         */
         public void AdicionarVeiculo()
         {
-            for (int contador = 0; contador <= veiculos.Count; contador++)
-            {   
-                //Limitador de vagas
-                if (contador < 58)
-                {
-                    Console.WriteLine("Há vaga!");
-                    Console.WriteLine();
+            Console.WriteLine("Digite a placa do veículo que esta entrando:");
+            string placa = Console.ReadLine();
 
-                    Console.WriteLine("Digite a placa do veículo que esta entrando:");
-                    string placa = Console.ReadLine();
+            veiculos.Add(placa);
+            //Limitador de vagas
+            if (veiculos.Count < 12)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Há vaga!");
 
-                    veiculos.Add(placa);
+                datasEntradaVeiculoString.Add(DataAtualizadaString());
+                
+                Console.WriteLine();
+                Console.WriteLine($"O veiculo de placa: {veiculos.Last()}\n" + $"Entrou as: {DataAtualizadaString()}");
 
-                    //Verificador de conteudo da lista
-                    if (veiculos[contador] != string.Empty)
-                    {
-                        horaEntradaVeiculos.Add(ConvertendoStringDataTimeParaInteiro(dataAtualString));
-
-                        Console.WriteLine();
-                        Console.WriteLine($" O veiculo de placa: {veiculos[contador]}\n" + $"Entrou as: {dataAtual}");
-
-                        //Alerta de capacidade limitada 
-                        if (contador == 50)
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine("ATENÇÃO O PROXIMO VÉCULO IRÁ FICAR NA ÁREA DE TRANSIÇÃO!! TEMOS SÓ MAIS OITO VAGAS!!!");
-                        }
-
-                        Console.WriteLine();
-                        Console.WriteLine("Solicitar a chave para que nossos motoristas o estacione");
-
-                        break;
-                    }  
-                }
-                //Alerta de capacidade esgotada
-                else
+                //Alerta de capacidade limite prestes a ser atingida
+                if (veiculos.Count == 10)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Não há mais vaga ):");
-
-                    break;
+                    Console.WriteLine("ATENÇÃO O PROXIMO VÉCULO IRÁ FICAR NA ÁREA DE TRANSIÇÃO!! TEMOS SÓ MAIS DUAS VAGAS!!!");
                 }
+                else if (veiculos.Count == 12)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("ULTIMA VAGA!!!! SE HOUVER FILA PEDIR QUE AGUARDE UM CARRO SAIR!!!!");
+                }
+                
+                Console.WriteLine();
+                Console.WriteLine("Solicitar a chave do veiculo para que um dos nossos motoristas o estacione");
             }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Não há mais vaga ):");
+            }
+
         }
 
         //Metodo para inserir hora manual
@@ -85,7 +78,7 @@ namespace DesafioFundamentos.Models
                 decimal valorTotal = (horas * precoPorHora) + precoInicial;
 
                 Console.WriteLine();
-                Console.WriteLine($" O veículo {placa} foi removido \n" + "preço total foi de: R$ {valorTotal}");
+                Console.WriteLine($"O veículo {placa} foi removido \n" + "Preço total foi de: R$ {valorTotal}");
 
                 veiculos.Remove(placa);
             }
@@ -95,9 +88,14 @@ namespace DesafioFundamentos.Models
             }
         }
 
-
+        /*
+        Remove o veiculo já preenchendo o campo de horas que o veiculo permaneceu estacionado.
+        */
         public void RemoverVeiculoAutomatico()
         {
+            double valorTotal = 0;
+            int tempoEstacionado = 0;
+
             Console.WriteLine();
             Console.WriteLine("Digite a placa do veículo que esta saindo:");
 
@@ -120,21 +118,20 @@ namespace DesafioFundamentos.Models
                 }
 
                 Console.WriteLine();
-                Console.WriteLine($"Entrada: {horaEntradaVeiculos[indexLista]}");
-                Console.WriteLine($"Saída : {dataAtualString}");
+                Console.WriteLine($"Entrada: {datasEntradaVeiculoString[indexLista]}");
+                Console.WriteLine($"Saída : {DataAtualizadaString()}");
 
-                // Calculo minutos estacionados
-                int tempoEstacionado = ConvertendoStringDataTimeParaInteiro(dataAtualString) -  horaEntradaVeiculos[indexLista];
-
+                // Calculo minutos estacionados 
+                tempoEstacionado = ConvertendoDataEmMinutos(DataAtualizadaString()) -  ConvertendoDataEmMinutos(datasEntradaVeiculoString[indexLista]);
                 Console.WriteLine($"Tempo Hospedagem do veiculo em minutos: {tempoEstacionado}");
 
-                decimal valorTotal = ((tempoEstacionado / 60) * precoPorHora) + precoInicial;
+                valorTotal = ((tempoEstacionado / 60) * Convert.ToDouble(precoPorHora)) + Convert.ToDouble(precoInicial);
 
                 Console.WriteLine();
-                Console.WriteLine($"O veículo {placa} foi removido \n" + $"preço total foi de: R$ {valorTotal}");
+                Console.WriteLine($"O veículo {placa} foi removido \n" + $"preço total foi de: R$ {valorTotal.ToString("N2")}");
 
                 veiculos.Remove(veiculos[indexLista]);
-                horaEntradaVeiculos.Remove(horaEntradaVeiculos[indexLista]);
+                datasEntradaVeiculoString.Remove(datasEntradaVeiculoString[indexLista]);
             }
             else
             {
@@ -153,7 +150,7 @@ namespace DesafioFundamentos.Models
                 for (int contador = 0; contador < veiculos.Count; contador++)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"Vaga {contador + 1} vaiculo: {veiculos[contador]}");
+                    Console.WriteLine($"Vaga {contador + 1} veiculo: {veiculos[contador]}\n" + $"Entrada:{datasEntradaVeiculoString[contador]}");
                 }
             }
             else
