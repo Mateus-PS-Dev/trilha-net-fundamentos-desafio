@@ -40,7 +40,8 @@ while (exibirMenu)
         case "2":
             es.RemoverVeiculoManual();
             break;
-
+        
+        // Implementação para desenvolvimeto de habilidades
         case "3":
             es.RemoverVeiculoAutomatico();
             break;
