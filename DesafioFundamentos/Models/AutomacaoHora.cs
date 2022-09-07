@@ -1,7 +1,17 @@
 namespace DesafioFundamentos.Models
 {
-    public class AutomacaoHora : AtualizacaoDaDataEmTempoReal
+    public class AutomacaoHora
     {
+        /// <summary>
+        /// Uma string que recebe a struct DateTime.Now convertida em string, retorna a mesma string. Assim atualizando o DateTime.Now toda vez que é invocada.
+        /// </summary>
+        /// <returns>Uma string com data atualizada no momento que o Metodo é invocado.</returns>
+        public static string DataAtualizadaString()
+        {
+            string dataAtualizadaString = Convert.ToString(DateTime.Now);
+
+            return dataAtualizadaString;
+        }
         /*
         Metodo para automatização da remoção do veiculo, qual pega o DateTime e transforma em minutos (para melhor visualização do funcionamento do codigo em execução) para depois no Estacionameto.cs converter em horas, para não necessitar inserir a hora com comando manual.
         */
