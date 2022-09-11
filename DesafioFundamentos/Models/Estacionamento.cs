@@ -7,9 +7,9 @@ namespace DesafioFundamentos.Models
 
         // Trabalhando com o Dictionary para aprendizado do metodo, apezar de não ser o melhor tipo de método para esse cenario.
         /*
-        O Método Dictinary é tipo de array "não ordenado" tipo uma fila(Queue) ou pilha(Stack). 
+        O Dictinary é tipo de coleção "não ordenada" diferente uma fila(Queue) ou pilha(Stack). 
 
-        O método tem uma certa ordem de entrada que pode ser utiliza para leitura de um foreach mas não pelo for. 
+        A coleção Dictionary tem uma certa ordem de entrada que pode ser utiliza para leitura de um foreach mas não pelo for. 
 
         Ele tem uma abertura de erro: quando você remove um valor ele deixa aquele espaço "ordenado para leitura" alocado com uma key vazia que não é possível fazer leitura, mas quando você adiciona um novo valor preenche aquele espaço na ordem de leitura.
         */
@@ -91,27 +91,27 @@ namespace DesafioFundamentos.Models
                 Console.WriteLine();
                 Console.WriteLine($"O veiculo de placa: {placa}\n" + 
                 $"Entrou as: {placaEDataEntrada[placa]}");
-                
-                //Alerta de capacidade limite prestes a ser atingida
-                if (limitador == 10)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("ATENÇÃO O PROXIMO VÉCULO IRÁ FICAR NA ÁREA DE TRANSIÇÃO!! TEMOS SÓ MAIS DUAS VAGAS!!!");
-                }
-                else if (limitador == 11)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("ATENÇÃO O PROXIMO VÉCULO IRÁ FICAR NA ÁREA DE TRANSIÇÃO!! TEMOS SÓ MAIS UMA VAGA!!!");
-                }
-                // Alerta limite atingido
-                else if (limitador == 12)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("ULTIMA VAGA!!!! SE HOUVER FILA PEDIR QUE AGUARDE UM CARRO SAIR!!!!");
-                }
-                
+
+                //Alerta de capacidade limite prestes a ser atingida com IF Ternário
+                bool igualADez = limitador == 10;
+                bool igualAOnze = limitador == 11;
+                bool igualADoze = limitador == 12;
+                string frasefinal = "Solicitar a chave do veiculo para que um dos nossos motoristas o estacione!";
+
                 Console.WriteLine();
-                Console.WriteLine("Solicitar a chave do veiculo para que um dos nossos motoristas o estacione");
+                Console.WriteLine
+                (
+                (igualADez ?
+                "ATENÇÃO O PROXIMO VÉCULO IRÁ FICAR NA ÁREA DE TRANSIÇÃO!! TEMOS SÓ MAIS DUAS VAGAS!!!" + $"\n{frasefinal}":
+
+                igualAOnze ? 
+                "ATENÇÃO O VÉCULO IRÁ FICAR NA ÁREA DE TRANSIÇÃO!! TEMOS SÓ MAIS UMA VAGA!!!" + $"\n{frasefinal}" :
+
+                igualADoze ? 
+                "ATENÇÃO O VÉCULO IRÁ FICAR NA ÁREA DE TRANSIÇÃO!! ULTIMA VAGA!!!! SE HOUVER FILA PEDIR QUE AGUARDE UM CARRO SAIR!!!!" + $"\n{frasefinal}":
+
+                $"{frasefinal}")
+                );
             }
             else
             {
@@ -122,7 +122,7 @@ namespace DesafioFundamentos.Models
 
         }
 
-        //Metodo para inserir hora manual
+        //Metodo para remover veiculo inserindo hora manual
         public void RemoverVeiculoManual()
         {   
             Console.WriteLine();
