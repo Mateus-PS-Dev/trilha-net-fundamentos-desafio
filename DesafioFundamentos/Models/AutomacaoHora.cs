@@ -15,7 +15,7 @@ namespace DesafioFundamentos.Models
         /*
         Metodo para automatização da remoção do veiculo, qual pega o DateTime e transforma em minutos (para melhor visualização do funcionamento do codigo em execução) para depois no Estacionameto.cs converter em horas, para não necessitar inserir a hora com comando manual.
         */
-        public int ConvertendoDataEmMinutos (string dataString)
+        public static int ConvertendoDataEmMinutos (string dataString)
         {
             List<char> caracteresData = new List<char>();
             string dataAtualizada = DataAtualizadaString(), coletorCaracteres = "";
